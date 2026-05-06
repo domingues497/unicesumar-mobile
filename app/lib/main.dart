@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,6 +9,8 @@ import 'models/filme_item.dart';
 import 'models/tema_item.dart';
 import 'widgets/filmes_listview.dart';
 import 'widgets/temas_gridview.dart';
+
+part 'main.gr.dart';
 
 const List<TemaItem> temas = <TemaItem>[
   TemaItem(
@@ -59,27 +63,42 @@ Future<List<FilmeItem>> carregarFilmes() async {
       .toList(growable: false);
 }
 
+@AutoRouterConfig(replaceInRouteName: 'Screen,Route')
+class AppRouter extends RootStackRouter {
+  @override
+  List<AutoRoute> get routes => <AutoRoute>[
+    AutoRoute(page: TelaPrincipalMovieAppRoute.page, path: '/'),
+    AutoRoute(page: DetalhesFilmeRoute.page, path: '/detalhes'),
+  ];
+}
+
 class MainApp extends StatelessWidget {
-  const MainApp({super.key, required this.filmes});
+  MainApp({super.key, required this.filmes});
 
   final List<FilmeItem> filmes;
+  final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Aula - Lista de Filmes',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1F6FEB)),
         useMaterial3: true,
       ),
-      home: TelaPrincipalMovieApp(filmes: filmes),
+      routerConfig: _appRouter.config(
+        deepLinkBuilder: (_) => DeepLink(<PageRouteInfo<dynamic>>[
+          TelaPrincipalMovieAppRoute(filmes: filmes),
+        ]),
+      ),
     );
   }
 }
 
-class TelaPrincipalMovieApp extends StatelessWidget {
-  const TelaPrincipalMovieApp({super.key, required this.filmes});
+@RoutePage()
+class TelaPrincipalMovieAppScreen extends StatelessWidget {
+  const TelaPrincipalMovieAppScreen({super.key, required this.filmes});
 
   final List<FilmeItem> filmes;
 
@@ -114,12 +133,7 @@ class TelaPrincipalMovieApp extends StatelessWidget {
               child: FilmesListView(
                 filmes: filmes,
                 onTap: (filme) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetalhesFilmeScreen(filme: filme),
-                    ),
-                  );
+                  context.router.push(DetalhesFilmeRoute(filme: filme));
                 },
               ),
             ),
@@ -130,6 +144,7 @@ class TelaPrincipalMovieApp extends StatelessWidget {
   }
 }
 
+@RoutePage()
 class DetalhesFilmeScreen extends StatelessWidget {
   final FilmeItem filme;
 
@@ -142,7 +157,7 @@ class DetalhesFilmeScreen extends StatelessWidget {
         title: const Text('Detalhes do Filme'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.router.pop(),
         ),
       ),
       body: Center(

@@ -15,6 +15,7 @@ void main() {
         ],
       ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.text('Movie App - Lista de Filmes'), findsOneWidget);
     expect(find.text('A Origem'), findsOneWidget);
