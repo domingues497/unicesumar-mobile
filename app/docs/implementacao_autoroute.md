@@ -85,7 +85,6 @@ Motivo: isso atende o Desafio 3, usando a navegação moderna do AutoRoute e man
 ### 6) Geração do arquivo main.gr.dart
 
 Depois de configurar o router e anotar as páginas, foi executado o build runner para gerar o arquivo:
-
 - `lib/main.gr.dart`
 
 Esse arquivo contém as classes de rotas geradas, como:

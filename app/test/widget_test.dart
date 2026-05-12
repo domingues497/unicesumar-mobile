@@ -4,7 +4,7 @@ import 'package:example_application/main.dart';
 import 'package:example_application/models/filme_item.dart';
 
 void main() {
-  testWidgets('Renderiza tela inicial de filmes', (WidgetTester tester) async {
+  testWidgets('Renderiza tela inicial de filmes!', (WidgetTester tester) async {
     await tester.pumpWidget(
       MainApp(
         filmes: const <FilmeItem>[

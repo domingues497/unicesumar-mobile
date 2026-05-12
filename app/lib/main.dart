@@ -1,22 +1,19 @@
 import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'models/filme_item.dart';
 import 'models/tema_item.dart';
 import 'widgets/filmes_listview.dart';
 import 'widgets/temas_gridview.dart';
-
 part 'main.gr.dart';
 
 const List<TemaItem> temas = <TemaItem>[
   TemaItem(
     nome: 'Ação',
     imageUrl: 'https://picsum.photos/seed/acao/500/350',
-    cor: Color(0xFF264653),
+    cor: Color(0xFF264652),
   ),
   TemaItem(
     nome: 'Comédia',
